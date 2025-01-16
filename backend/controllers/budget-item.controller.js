@@ -1,5 +1,13 @@
 const BudgetItem = require('../models/budget-item.model');
 
+/**
+ * Obtiene todos los rubros registrados.
+ * @async
+ * @function getBudgetItems
+ * @param {import('express').Request} req - Objeto de solicitud de Express.
+ * @param {import('express').Response} res - Objeto de respuesta de Express.
+ * @returns {Promise<void>} Devuelve una lista de rubros en formato JSON.
+ */
 exports.getBudgetItems = async (req, res) => {
   try {
     const items = await BudgetItem.findAll();
@@ -9,6 +17,14 @@ exports.getBudgetItems = async (req, res) => {
   }
 };
 
+/**
+ * Obtiene un rubro específico por su ID.
+ * @async
+ * @function getBudgetItemById
+ * @param {import('express').Request} req - Objeto de solicitud de Express.
+ * @param {import('express').Response} res - Objeto de respuesta de Express.
+ * @returns {Promise<void>} Devuelve el rubro encontrado o un mensaje de error si no existe.
+ */
 exports.getBudgetItemById = async (req, res) => {
   try {
     const item = await BudgetItem.findByPk(req.params.id);
@@ -19,6 +35,14 @@ exports.getBudgetItemById = async (req, res) => {
   }
 };
 
+/**
+ * Crea un nuevo rubro dentro de un proyecto.
+ * @async
+ * @function createBudgetItem
+ * @param {import('express').Request} req - Objeto de solicitud de Express con los datos del rubro en el cuerpo.
+ * @param {import('express').Response} res - Objeto de respuesta de Express.
+ * @returns {Promise<void>} Devuelve el rubro creado en formato JSON.
+ */
 exports.createBudgetItem = async (req, res) => {
   try {
     const { name, project_id } = req.body;
@@ -29,6 +53,14 @@ exports.createBudgetItem = async (req, res) => {
   }
 };
 
+/**
+ * Actualiza un rubro existente por su ID.
+ * @async
+ * @function updateBudgetItem
+ * @param {import('express').Request} req - Objeto de solicitud de Express con los datos a actualizar en el cuerpo.
+ * @param {import('express').Response} res - Objeto de respuesta de Express.
+ * @returns {Promise<void>} Devuelve el rubro actualizado en formato JSON o un mensaje de error si no se encuentra.
+ */
 exports.updateBudgetItem = async (req, res) => {
   try {
     const item = await BudgetItem.findByPk(req.params.id);
@@ -41,6 +73,14 @@ exports.updateBudgetItem = async (req, res) => {
   }
 };
 
+/**
+ * Elimina un rubro por su ID.
+ * @async
+ * @function deleteBudgetItem
+ * @param {import('express').Request} req - Objeto de solicitud de Express con el ID del rubro en los parámetros.
+ * @param {import('express').Response} res - Objeto de respuesta de Express.
+ * @returns {Promise<void>} Devuelve un mensaje de éxito si el rubro fue eliminado o un mensaje de error si no se encuentra.
+ */
 exports.deleteBudgetItem = async (req, res) => {
   try {
     const item = await BudgetItem.findByPk(req.params.id);
