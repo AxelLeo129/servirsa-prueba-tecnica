@@ -3,6 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const sequelize = require('./config/database');
 const { swaggerUi, swaggerDocs } = require('./config/swagger');
+const cors = require('cors');
 
 const projectRoutes = require('./routes/project.route');
 const budgetItemRoutes = require('./routes/budget-item.route');
@@ -10,6 +11,15 @@ const donationRoutes = require('./routes/donation.route');
 const purchaseOrderRoutes = require('./routes/purchase-order.route');
 
 const app = express();
+
+/**
+ * Habilita CORS para permitir solicitudes desde el frontend
+ */
+app.use(cors({
+  origin: 'http://localhost:4200',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 /**
  * Middleware para registrar las solicitudes HTTP en la consola.
@@ -26,7 +36,7 @@ app.use(express.json());
  * Rutas de la API.
  * Se definen las rutas base para cada entidad del sistema.
  */
-app.use('/api', projectRoutes);
+app.use('/api/projects', projectRoutes);
 app.use('/api/budget-items', budgetItemRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/purchase-orders', purchaseOrderRoutes);

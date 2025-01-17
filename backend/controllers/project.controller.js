@@ -10,10 +10,31 @@ const Project = require('../models/project.model');
  */
 exports.getProjects = async (req, res) => {
   try {
-    const projects = await Project.findAll();
-    res.json(projects);
+    const { page = 1, size = 10, search = '' } = req.query; // Parámetros de paginación y búsqueda
+    const limit = parseInt(size, 10);
+    const offset = (parseInt(page, 10) - 1) * limit;
+
+    const whereClause = search
+      ? {
+          name: { [Op.iLike]: `%${search}%` }, // Búsqueda insensible a mayúsculas/minúsculas
+        }
+      : {};
+
+    const { count, rows } = await Project.findAndCountAll({
+      where: whereClause,
+      limit,
+      offset,
+      order: [['id', 'ASC']]
+    });
+
+    res.json({
+      totalItems: count,
+      totalPages: Math.ceil(count / limit),
+      currentPage: parseInt(page, 10),
+      projects: rows,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving projects', error });
+    res.status(500).json({ message: 'Error al obtener los proyectos', error });
   }
 };
 
