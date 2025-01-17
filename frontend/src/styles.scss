@@ -2,3 +2,26 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+h2, h1 {
+  color: white;
+}
+
+.extra-actions {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.example-card {
+  margin: 1%;
+}
+
+mat-card-content {
+  padding: 3%;
+}
+
+.display-form-input {
+  display: flex;
+  justify-content: space-around;
+}

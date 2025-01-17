@@ -11,4 +11,9 @@ export interface Project {
 export interface ProjectList {
   projects: Project[],
   totalItems: number;
+};
+
+export interface Department {
+  name: string;
+  municipalities: string[];
 }

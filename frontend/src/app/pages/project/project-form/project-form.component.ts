@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GeneralService } from '../../../services/general.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Project } from '../../../models/project.model';
+import { Department, Project } from '../../../models/project.model';
+import { departments } from '../../../../utils/constants';
 
 @Component({
   selector: 'app-project-form',
@@ -15,6 +16,8 @@ export class ProjectFormComponent implements OnInit {
   public projectForm!: FormGroup;
   public isEditing: boolean = false;
   private projectId: number | null = null;
+  public departments: Department[] = departments;
+  public filteredMunicipalities: string[] = [];
 
   /**
    * Constructor del componente.
@@ -24,7 +27,6 @@ export class ProjectFormComponent implements OnInit {
    * @param router Servicio para la navegación entre rutas.
    */
   constructor(
-    private fb: FormBuilder,
     private generalService: GeneralService,
     private route: ActivatedRoute,
     public router: Router
@@ -40,7 +42,7 @@ export class ProjectFormComponent implements OnInit {
   createFormGroup(): FormGroup {
     return new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      municipality: new FormControl('', [Validators.required]),
+      municipality: new FormControl({ value: '', disabled: true }, [Validators.required]),
       department: new FormControl('', [Validators.required]),
       start_date: new FormControl('', [Validators.required]),
       end_date: new FormControl('', [Validators.required])
@@ -51,6 +53,9 @@ export class ProjectFormComponent implements OnInit {
    * Inicializa el formulario y verifica si es un modo de edición.
    */
   ngOnInit(): void {
+    this.projectForm.get('department')?.valueChanges.subscribe((selectedDepartment) => {
+      this.updateMunicipalities(selectedDepartment);
+    });
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -62,13 +67,32 @@ export class ProjectFormComponent implements OnInit {
   }
 
   /**
+   * Actualiza la lista de municipios cuando cambia el departamento seleccionado.
+   */
+  updateMunicipalities(selectedDepartment: string, municipalityValue: string = ""): void {
+    const selectedDept = this.departments.find(dept => dept.name === selectedDepartment);
+    this.filteredMunicipalities = selectedDept ? selectedDept.municipalities : [];
+
+    const municipalityControl = this.projectForm.get('municipality');
+    if (this.filteredMunicipalities.length > 0) {
+      municipalityControl?.enable();
+    } else {
+      municipalityControl?.disable();
+      municipalityControl?.setValue(municipalityValue);
+    }
+  }
+
+  /**
    * Carga los datos de un proyecto para edición.
    *
    * @param id Identificador del proyecto.
    */
   loadProject(id: number): void {
     this.generalService.get<Project | undefined>('/projects/' + id).then((project: Project | undefined) => {
-      if (project) this.projectForm.patchValue(project);
+      if (project) {
+        this.projectForm.patchValue(project);
+        this.updateMunicipalities(project.department, project.municipality);
+      }
     });
   }
 

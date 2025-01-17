@@ -49,7 +49,7 @@ export class ProjectListComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.searchQuery = filterValue;
     this.currentPage = 1;
-    this.loadProjects();
+    this.loadProjects(1, this.paginator.pageSize, this.searchQuery);
   }
 
   changePage(event: any): void {

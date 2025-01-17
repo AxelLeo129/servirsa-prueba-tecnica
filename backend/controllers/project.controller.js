@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const Project = require('../models/project.model');
 
 /**
