@@ -95,28 +95,4 @@ export class BudgetItemFormComponent implements OnInit {
    */
   get name() { return this.form.get('name'); }
 
-  /**
-   * Obtiene el control del formulario para el campo `municipality`.
-   * @returns Control del formulario `municipality`.
-   */
-  get municipality() { return this.form.get('municipality'); }
-
-  /**
-   * Obtiene el control del formulario para el campo `department`.
-   * @returns Control del formulario `department`.
-   */
-  get department() { return this.form.get('department'); }
-
-  /**
-   * Obtiene el control del formulario para el campo `start_date`.
-   * @returns Control del formulario `start_date`.
-   */
-  get start_date() { return this.form.get('start_date'); }
-
-  /**
-   * Obtiene el control del formulario para el campo `end_date`.
-   * @returns Control del formulario `end_date`.
-   */
-  get end_date() { return this.form.get('end_date'); }
-
 }

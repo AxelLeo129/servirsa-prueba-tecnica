@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const Donation = require('../models/donation.model');
 
 /**
@@ -10,10 +11,36 @@ const Donation = require('../models/donation.model');
  */
 exports.getDonations = async (req, res) => {
   try {
-    const donations = await Donation.findAll();
-    res.json(donations);
+    const { page = 1, size = 10, search = '' } = req.query; // Parámetros de paginación y búsqueda
+    const project_id = req.params.id; // Extraer project_id de la URL
+    const budget_item_id = req.params.budget_item_id; // Extraer budget_item_id de la URL
+
+    const limit = parseInt(size, 10);
+    const offset = (parseInt(page, 10) - 1) * limit;
+
+    // Construcción del filtro dinámico
+    const whereClause = {
+      ...(search ? { donor: { [Op.iLike]: `%${search}%` } } : {}), // Búsqueda insensible a mayúsculas/minúsculas en el campo `donor`
+      ...(project_id ? { project_id: parseInt(project_id, 10) } : {}), // Filtrar por `project_id`
+      ...(budget_item_id ? { budget_item_id: parseInt(budget_item_id, 10) } : {}) // Filtrar por `budget_item_id`
+    };
+
+    const { count, rows } = await Donation.findAndCountAll({
+      where: whereClause,
+      limit,
+      offset,
+      order: [['id', 'ASC']]
+    });
+
+    res.json({
+      totalItems: count,
+      totalPages: Math.ceil(count / limit),
+      currentPage: parseInt(page, 10),
+      donations: rows,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving donations', error });
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener las donaciones', error });
   }
 };
 
@@ -70,5 +97,25 @@ exports.deleteDonation = async (req, res) => {
     res.json({ message: 'Donation deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting donation', error });
+  }
+};
+
+/**
+ * Actualiza un rubro existente por su ID.
+ * @async
+ * @function updateBudgetItem
+ * @param {import('express').Request} req - Objeto de solicitud de Express con los datos a actualizar en el cuerpo.
+ * @param {import('express').Response} res - Objeto de respuesta de Express.
+ * @returns {Promise<void>} Devuelve el rubro actualizado en formato JSON o un mensaje de error si no se encuentra.
+ */
+exports.updateDonation = async (req, res) => {
+  try {
+    const item = await Donation.findByPk(req.params.id);
+    if (!item) return res.status(404).json({ message: 'Donation not found' });
+
+    await item.update(req.body);
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating budget item', error });
   }
 };

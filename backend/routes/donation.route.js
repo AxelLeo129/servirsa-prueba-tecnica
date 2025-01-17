@@ -19,7 +19,7 @@ const donationController = require('../controllers/donation.controller');
  *       200:
  *         description: Lista de donaciones
  */
-router.get('/', donationController.getDonations);
+router.get('/list/:id/:budget_item_id', donationController.getDonations);
 
 /**
  * @swagger
@@ -70,6 +70,8 @@ router.get('/:id', donationController.getDonationById);
  *         description: Donación creada exitosamente
  */
 router.post('/', donationController.createDonation);
+
+router.put('/:id', donationController.updateDonation);
 
 /**
  * @swagger
