@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const BudgetItem = require('../models/budget-item.model');
 
 /**
@@ -10,10 +11,34 @@ const BudgetItem = require('../models/budget-item.model');
  */
 exports.getBudgetItems = async (req, res) => {
   try {
-    const items = await BudgetItem.findAll();
-    res.json(items);
+    const { page = 1, size = 10, search = '' } = req.query; // Parámetros de paginación y búsqueda
+    const project_id = req.params.id; // Extraer project_id de la URL
+
+    const limit = parseInt(size, 10);
+    const offset = (parseInt(page, 10) - 1) * limit;
+
+    // Construcción del filtro dinámico
+    const whereClause = {
+      ...(search ? { name: { [Op.iLike]: `%${search}%` } } : {}), // Búsqueda insensible a mayúsculas/minúsculas
+      ...(project_id ? { project_id: parseInt(project_id, 10) } : {}) // Filtrar por project_id de la URL
+    };
+
+    const { count, rows } = await BudgetItem.findAndCountAll({
+      where: whereClause,
+      limit,
+      offset,
+      order: [['id', 'ASC']]
+    });
+
+    res.json({
+      totalItems: count,
+      totalPages: Math.ceil(count / limit),
+      currentPage: parseInt(page, 10),
+      budgetItems: rows,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving budget items', error });
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener los ítems de presupuesto', error });
   }
 };
 

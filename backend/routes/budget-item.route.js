@@ -11,15 +11,15 @@ const budgetItemController = require('../controllers/budget-item.controller');
 
 /**
  * @swagger
- * /api/budget-items:
+ * /api/budget-items/list/{id}:
  *   get:
- *     summary: Obtener todos los rubros
+ *     summary: Obtener list de los rubros según el proyecto al que pertenecen
  *     tags: [Rubros]
  *     responses:
  *       200:
  *         description: Lista de rubros
  */
-router.get('/', budgetItemController.getBudgetItems);
+router.get('/list/:id', budgetItemController.getBudgetItems);
 
 /**
  * @swagger
@@ -63,6 +63,33 @@ router.get('/:id', budgetItemController.getBudgetItemById);
  *         description: Rubro creado exitosamente
  */
 router.post('/', budgetItemController.createBudgetItem);
+
+/**
+ * @swagger
+ * /api/budget-items/{id}:
+ *   put:
+ *     summary: Actualizar un rubro por ID
+ *     tags: [Rubros]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Rubro actualizado exitosamente
+ */
+router.put('/:id', budgetItemController.updateBudgetItem);
 
 /**
  * @swagger
