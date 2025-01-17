@@ -1,0 +1,17 @@
+<h2>Detalles del Proyecto</h2>
+
+<div *ngIf="project">
+  <p><strong>ID:</strong> {{ project.id }}</p>
+  <p><strong>Nombre:</strong> {{ project.name }}</p>
+  <p><strong>Municipio:</strong> {{ project.municipality }}</p>
+  <p><strong>Departamento:</strong> {{ project.department }}</p>
+  <p><strong>Fecha de Inicio:</strong> {{ project.start_date }}</p>
+  <p><strong>Fecha de Fin:</strong> {{ project.end_date }}</p>
+
+  <button mat-raised-button color="primary" (click)="router.navigate(['/edit', project.id])">
+    Editar
+  </button>
+  <button mat-raised-button color="warn" (click)="router.navigate(['/projects'])">
+    Volver
+  </button>
+</div>

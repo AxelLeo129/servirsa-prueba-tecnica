@@ -16,7 +16,7 @@ const sequelize = require('../config/database');
  */
 const Project = sequelize.define('projects', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  code: { type: DataTypes.STRING, unique: true, allowNull: false },
+  code: { type: DataTypes.STRING, unique: true, allowNull: true },
   name: { type: DataTypes.STRING, allowNull: false },
   municipality: { type: DataTypes.STRING, allowNull: false },
   department: { type: DataTypes.STRING, allowNull: false },
@@ -27,16 +27,16 @@ const Project = sequelize.define('projects', {
 });
 
 /**
- * Middleware que genera un código único para cada proyecto antes de ser creado.
- * El código sigue el formato "P-0001", "P-0002", etc.
+ * Middleware para generar el código antes de crear un proyecto.
  */
 Project.beforeCreate(async (project) => {
+  console.log('here')
   const lastProject = await Project.findOne({ order: [['id', 'DESC']] });
-  const lastCode = lastProject ? lastProject.code : null;
-  
+
   let nextNumber = 1;
-  if (lastCode) {
-    nextNumber = parseInt(lastCode.split('-')[1]) + 1;
+  if (lastProject && lastProject.code) {
+    const lastCode = lastProject.code.split('-')[1]; // Extrae el número del código
+    nextNumber = parseInt(lastCode, 10) + 1;
   }
 
   project.code = `P-${String(nextNumber).padStart(4, '0')}`;

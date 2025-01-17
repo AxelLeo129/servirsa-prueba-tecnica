@@ -1,1 +1,57 @@
-<p>project-form works!</p>
+<div class="d-flex justify-content-center" style="margin-top: 5%;">
+  <div class="project-container">
+    <h2>{{ isEditing ? 'Editar Proyecto' : 'Crear Proyecto' }}</h2>
+    <form (ngSubmit)="saveProject()" [formGroup]="projectForm">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="name">
+        <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+          <span *ngIf="name?.errors?.['required']"><small>El campo es obligatorio</small></span>
+          <span *ngIf="name?.errors?.['minlength']"><small>Mínimo 3 caracteres</small></span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Municipio</mat-label>
+        <input matInput formControlName="municipality">
+        <mat-error *ngIf="municipality?.invalid && (municipality?.dirty || municipality?.touched)">
+          <span *ngIf="municipality?.errors?.['required']"><small>El campo es obligatorio</small></span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Departamento</mat-label>
+        <input matInput formControlName="department">
+        <mat-error *ngIf="department?.invalid && (department?.dirty || department?.touched)">
+          <span *ngIf="department?.errors?.['required']"><small>El campo es obligatorio</small></span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha de Inicio</mat-label>
+        <input matInput type="date" formControlName="start_date">
+        <mat-error *ngIf="start_date?.invalid && (start_date?.dirty || start_date?.touched)">
+          <span *ngIf="start_date?.errors?.['required']"><small>El campo es obligatorio</small></span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha de Fin</mat-label>
+        <input matInput type="date" formControlName="end_date">
+        <mat-error *ngIf="end_date?.invalid && (end_date?.dirty || end_date?.touched)">
+          <span *ngIf="end_date?.errors?.['required']"><small>El campo es obligatorio</small></span>
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="!projectForm.valid">
+        {{ isEditing ? 'Actualizar' : 'Crear' }}
+      </button>
+      <button mat-raised-button color="warn" (click)="router.navigate(['/projects'])">
+        Cancelar
+      </button>
+    </form>
+
+    <ngx-loading [show]="loading" fullScreenBackdrop="true"></ngx-loading>
+  </div>
+</div>

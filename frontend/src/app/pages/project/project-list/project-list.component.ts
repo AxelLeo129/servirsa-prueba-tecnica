@@ -4,6 +4,7 @@ import { GeneralService } from '../../../services/general.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-project-list',
@@ -12,7 +13,7 @@ import { MatSort } from '@angular/material/sort';
 })
 export class ProjectListComponent implements OnInit {
 
-  public displayedColumns: string[] = ['id', 'name', 'municipality', 'department', 'actions'];
+  public displayedColumns: string[] = ['code', 'name', 'municipality', 'department', 'actions'];
   public dataSource = new MatTableDataSource<Project>();
   public totalItems = 0;
   public pageSize = 10;
@@ -22,7 +23,7 @@ export class ProjectListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private generalService: GeneralService) {}
+  constructor(private generalService: GeneralService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadProjects();
@@ -61,6 +62,18 @@ export class ProjectListComponent implements OnInit {
     this.generalService.delete('/projects/' + id).then(() => {
       this.loadProjects();
     });
+  }
+
+  goToCreate(): void {
+    this.router.navigate(['/projects/create']);
+  }
+
+  goToEdit(id: number): void {
+    this.router.navigate(['/projects/edit', id]);
+  }
+
+  goToDetails(id: number): void {
+    this.router.navigate(['/projects/details', id]);
   }
 
 }
