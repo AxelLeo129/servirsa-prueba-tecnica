@@ -11,8 +11,12 @@
         <p><strong>Nombre:</strong> {{ budgetItem.name }}</p>
       </div>
       <div>
-        <button mat-raised-button color="accent" (click)="router.navigate(['/donations/' + projectId, budgetItem.id])">
+        <button style="margin: 5%" mat-raised-button color="accent" (click)="router.navigate(['/donations/' + projectId, budgetItem.id])">
           Donaciones
+        </button>
+        <br>
+        <button style="margin: 5%" mat-raised-button color="accent" (click)="router.navigate(['/purchase-orders/' + projectId, budgetItem.id])">
+          Gastos
         </button>
       </div>
     </div>

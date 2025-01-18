@@ -19,7 +19,7 @@ const purchaseOrderController = require('../controllers/purchase-order.controlle
  *       200:
  *         description: Lista de órdenes de compra
  */
-router.get('/', purchaseOrderController.getPurchaseOrders);
+router.get('/list/:id/:budget_item_id', purchaseOrderController.getPurchaseOrders);
 
 /**
  * @swagger
@@ -70,6 +70,8 @@ router.get('/:id', purchaseOrderController.getPurchaseOrderById);
  *         description: Orden de compra creada exitosamente
  */
 router.post('/', purchaseOrderController.createPurchaseOrder);
+
+router.put('/:id', purchaseOrderController.updatePurchaseOrder);
 
 /**
  * @swagger
