@@ -53,7 +53,7 @@ export class PurchaseOrderFormComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const pid = params.get('id');
       if(pid) this.projectId = parseInt(pid, 10);
-      const bid = params.get('id');
+      const bid = params.get('id1');
       if(bid) this.bdId = parseInt(bid, 10);
       const id = params.get('id2');
       if (id) {
