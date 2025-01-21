@@ -1,0 +1,16 @@
+<mat-toolbar>
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="router.navigate(['/'])">
+      <mat-icon>dialpad</mat-icon>
+      <span>Listado de proyectos</span>
+    </button>
+  </mat-menu>
+  <span>Servirsa - Prueba técnica</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+    <mat-icon>share</mat-icon>
+  </button>
+</mat-toolbar>

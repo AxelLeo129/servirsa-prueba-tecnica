@@ -1,0 +1,32 @@
+<mat-card class="example-card" style="max-width: 50%;">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>Detalles del Proyecto</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content style="color: white;">
+    <div class="display-form-input">
+      <div *ngIf="project">
+        <p><strong>Código:</strong> {{ project.code }}</p>
+        <p><strong>Nombre:</strong> {{ project.name }}</p>
+        <p><strong>Municipio:</strong> {{ project.municipality }}</p>
+        <p><strong>Departamento:</strong> {{ project.department }}</p>
+        <p><strong>Fecha de Inicio:</strong> {{ project.start_date }}</p>
+        <p><strong>Fecha de Fin:</strong> {{ project.end_date }}</p>
+      </div>
+      <div>
+        <button mat-raised-button color="accent" (click)="router.navigate(['/budget-items', project.id])">
+          Rubros
+        </button>
+      </div>
+    </div>
+    <div class="display-form-input">
+      <button mat-raised-button color="primary" (click)="router.navigate(['/edit', project.id])">
+        Editar
+      </button>
+      <button mat-raised-button color="warn" (click)="router.navigate(['/projects'])">
+        Volver
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

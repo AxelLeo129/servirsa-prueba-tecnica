@@ -1,0 +1,74 @@
+<mat-card class="example-card" style="max-width: 50%;">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>{{ isEditing ? 'Editar Proyecto' : 'Crear Proyecto' }}</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form (ngSubmit)="saveProject()" [formGroup]="projectForm">
+      <div class="display-form-input">
+        <mat-form-field color="accent" appearance="outline" style="width: 100%;">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name">
+          <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+            <span *ngIf="name?.errors?.['required']"><small>El campo es obligatorio</small></span>
+            <span *ngIf="name?.errors?.['minlength']"><small>Mínimo 3 caracteres</small></span>
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+      <div class="display-form-input">
+        <mat-form-field color="accent" appearance="outline" style="width: 100%;">
+          <mat-label>Departamento</mat-label>
+          <mat-select formControlName="department">
+            @for (department of departments; track department.name) {
+            <mat-option [value]="department.name">{{ department.name }}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="projectForm.get('department')?.invalid">
+            El departamento es obligatorio.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field color="accent" appearance="outline" style="width: 100%;">
+          <mat-label>Municipio</mat-label>
+          <mat-select formControlName="municipality">
+            @for (municipality of filteredMunicipalities; track municipality) {
+            <mat-option [value]="municipality">{{ municipality }}</mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="projectForm.get('municipality')?.invalid">
+            El municipio es obligatorio.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="display-form-input">
+        <mat-form-field color="accent" appearance="outline" style="width: 100%;">
+          <mat-label>Fecha de Inicio</mat-label>
+          <input matInput type="date" formControlName="start_date">
+          <mat-error *ngIf="start_date?.invalid && (start_date?.dirty || start_date?.touched)">
+            <span *ngIf="start_date?.errors?.['required']"><small>El campo es obligatorio</small></span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field color="accent" appearance="outline" style="width: 100%;">
+          <mat-label>Fecha de Fin</mat-label>
+          <input matInput type="date" formControlName="end_date">
+          <mat-error *ngIf="end_date?.invalid && (end_date?.dirty || end_date?.touched)">
+            <span *ngIf="end_date?.errors?.['required']"><small>El campo es obligatorio</small></span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="display-form-input">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!projectForm.valid">
+          {{ isEditing ? 'Actualizar' : 'Crear' }}
+        </button>
+        <button mat-raised-button color="warn" (click)="router.navigate(['/projects'])">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

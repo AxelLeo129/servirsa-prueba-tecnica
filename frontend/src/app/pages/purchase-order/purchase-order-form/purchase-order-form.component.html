@@ -1,0 +1,48 @@
+<mat-card class="example-card" style="max-width: 50%;">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>{{ isEditing ? 'Editar Gasto' : 'Crear Gasto' }}</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form (ngSubmit)="save()" [formGroup]="form">
+      <div class="display-form-input">
+        <mat-form-field color="accent" appearance="outline" style="width: 100%;">
+          <mat-label>Proveedor</mat-label>
+          <input matInput formControlName="supplier">
+          <mat-error *ngIf="supplier?.invalid && (supplier?.dirty || supplier?.touched)">
+            <span *ngIf="supplier?.errors?.['required']"><small>El campo es obligatorio</small></span>
+            <span *ngIf="supplier?.errors?.['minlength']"><small>Mínimo 3 caracteres</small></span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="display-form-input">
+        <mat-form-field color="accent" appearance="outline" style="width: 100%;">
+          <mat-label>Fecha</mat-label>
+          <input matInput formControlName="date" type="date">
+          <mat-error *ngIf="date?.invalid && (date?.dirty || date?.touched)">
+            <span *ngIf="date?.errors?.['required']"><small>El campo es obligatorio</small></span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="display-form-input">
+        <mat-form-field color="accent" appearance="outline" style="width: 100%;">
+          <mat-label>Monto</mat-label>
+          <input matInput formControlName="amount" type="number">
+          <mat-error *ngIf="amount?.invalid && (amount?.dirty || amount?.touched)">
+            <span *ngIf="amount?.errors?.['required']"><small>El campo es obligatorio</small></span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="display-form-input">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+          {{ isEditing ? 'Actualizar' : 'Crear' }}
+        </button>
+        <button mat-raised-button color="warn" (click)="router.navigate(['/donations/' + projectId + '/' + bdId])">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

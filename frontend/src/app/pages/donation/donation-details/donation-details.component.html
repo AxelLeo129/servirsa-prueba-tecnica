@@ -1,0 +1,27 @@
+<mat-card class="example-card" style="max-width: 50%;">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>Detalles de la Donación</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content style="color: white;">
+    <div class="display-form-input">
+      <div *ngIf="donation">
+        <p><strong>Código:</strong> {{ donation.id }}</p>
+        <p><strong>Donador:</strong> {{ donation.donor }}</p>
+        <p><strong>Fecha:</strong> {{ donation.date }}</p>
+        <p><strong>Monto:</strong> $ {{ donation.amount }}</p>
+      </div>
+      <div>
+      </div>
+    </div>
+    <div class="display-form-input">
+      <button mat-raised-button color="primary" (click)="router.navigate(['/donations/' + projectId + '/' + biId + '/edit', donation.id])">
+        Editar
+      </button>
+      <button mat-raised-button color="warn" (click)="router.navigate(['/donations/' + projectId + '/' + biId])">
+        Volver
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

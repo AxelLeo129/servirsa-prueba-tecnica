@@ -1,0 +1,31 @@
+<mat-card class="example-card" style="max-width: 50%;">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>{{ isEditing ? 'Editar Rubro' : 'Crear Rubro' }}</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form (ngSubmit)="save()" [formGroup]="form">
+      <div class="display-form-input">
+        <mat-form-field color="accent" appearance="outline" style="width: 100%;">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name">
+          <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+            <span *ngIf="name?.errors?.['required']"><small>El campo es obligatorio</small></span>
+            <span *ngIf="name?.errors?.['minlength']"><small>Mínimo 3 caracteres</small></span>
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <div class="display-form-input">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+          {{ isEditing ? 'Actualizar' : 'Crear' }}
+        </button>
+        <button mat-raised-button color="warn" (click)="router.navigate(['/budget-items/' + projectId])">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

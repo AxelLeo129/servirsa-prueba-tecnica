@@ -1,0 +1,65 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>Lista de Proyectos</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="extra-actions">
+      <mat-form-field color="accent" appearance="outline">
+        <mat-label>Buscar</mat-label>
+        <input matInput placeholder="Buscar..." (input)="applySearch($event)" />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="goToCreate()">Crear Proyecto</button>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Código</th>
+        <td mat-cell *matCellDef="let project">{{ project.code }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+        <td mat-cell *matCellDef="let project">{{ project.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="municipality">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Municipio</th>
+        <td mat-cell *matCellDef="let project">{{ project.municipality }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Departamento</th>
+        <td mat-cell *matCellDef="let project">{{ project.department }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let project">
+          <button mat-icon-button color="basic" (click)="goToDetails(project.id)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" (click)="goToEdit(project.id)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteProject(project.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <!-- Paginador -->
+    <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+      (page)="changePage($event)">
+    </mat-paginator>
+
+  </mat-card-content>
+</mat-card>
